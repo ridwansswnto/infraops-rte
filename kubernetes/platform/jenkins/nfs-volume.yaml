@@ -4,7 +4,7 @@ metadata:
   name: nfs-disk
   namespace: jenkins
 spec:
-  storageClassName: "standard"
+  storageClassName: "standard-rwo"
   accessModes:
     - ReadWriteOnce
   resources:
