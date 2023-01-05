@@ -122,7 +122,15 @@ resource "google_container_cluster" "primary" {
   }
 
   cluster_autoscaling {
-    enabled = false
+    enabled = var.cluster_autoscaling
+    resource_limits {
+      resource_type = "cpu"
+      maximum       = var.max_cpu
+    }
+    resource_limits {
+      resource_type = "memory"
+      maximum       = var.max_memory
+    }
   }
 
   private_cluster_config {

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-server-deployment
+  namespace: jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service_name: nfs-server
+  template:
+    metadata:
+      labels:
+        service_name: nfs-server
+    spec:
+      securityContext:
+        fsGroup: 3000
+      serviceAccountName: nfs-admin
+      containers:
+      - name: nfs-server
+        image: gcr.io/google_containers/volume-nfs:0.8
+        ports:
+        - name: nfs
+          containerPort: 2049
+          protocol: TCP
+        - name: mountd
+          containerPort: 20048
+          protocol: TCP
+        - name: rpcbind
+          containerPort: 111
+          protocol: TCP
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /data
+          name: jenkins-data
+      dnsPolicy: ClusterFirst
+      volumes:
+        - name: jenkins-data
+          persistentVolumeClaim:
+            claimName: nfs-disk

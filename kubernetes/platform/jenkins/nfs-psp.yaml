@@ -1,0 +1,49 @@
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: psp-nfs
+spec:
+  privileged: true
+  fsGroup:
+    rule: RunAsAny
+  hostPorts:
+    - max: 0
+      min: 0
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: use-psp:nfs
+  namespace: jenkins
+rules:
+  - apiGroups:
+      - policy
+    resourceNames:
+      - psp-nfs
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: use-psp:nfs-binding
+  namespace: jenkins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: use-psp:nfs
+subjects:
+  - kind: ServiceAccount
+    name: nfs-admin
+    namespace: jenkins

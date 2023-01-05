@@ -26,6 +26,10 @@ variable "cluster_location" {
   type = string
 }
 
+variable "cluster_autoscaling" {
+  type = bool
+}
+
 variable "regional_cluster" {
   default = true
 }

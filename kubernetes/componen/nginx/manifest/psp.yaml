@@ -1,0 +1,54 @@
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: psp-ingress-nginx
+spec:
+  allowedCapabilities:
+    - NET_BIND_SERVICE  
+  privileged: true
+  fsGroup:
+    rule: RunAsAny
+  hostPorts:
+    - max: 0
+      min: 0
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: use-psp:ingress-nginx
+  namespace: ingress-nginx
+rules:
+  - apiGroups:
+      - policy
+    resourceNames:
+      - psp-ingress-nginx
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: use-psp:ingress-nginx-binding
+  namespace: ingress-nginx
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: use-psp:ingress-nginx
+subjects:
+  - kind: ServiceAccount
+    name: ingress-nginx
+    namespace: ingress-nginx
+  - kind: ServiceAccount
+    name: ingress-nginx-admission
+    namespace: ingress-nginx

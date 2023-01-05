@@ -52,6 +52,7 @@ module "rds-cluster" {
   max_memory                  = 200
   enable_binary_authorization = true
   nodepool_auto_upgrade       = false
+  cluster_autoscaling         = true
 
   #APP POOL
   app_pools                   = [
