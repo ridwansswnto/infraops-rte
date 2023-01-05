@@ -4,6 +4,8 @@
 ## Notes
 ### GKE
 
+Terdapat notif `Can’t scale up a node pool because of a failing scheduling predicate `
+
 Kondisi Existing GKE dengan disable NAP (Node Auto Provision) di jadikan enable maka behaviournya
 - Di terraform hanya terdetect 1 changes 
 ```
