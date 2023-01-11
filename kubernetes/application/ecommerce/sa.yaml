@@ -1,0 +1,33 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: education-cr
+rules:
+  - apiGroups: [""]
+    resources: ["*"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["podsecuritypolicies"]
+    verbs: ["use"]
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: education-sa
+  namespace: education-ns
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: education-crb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: education-cr
+subjects:
+- kind: ServiceAccount
+  name: education-sa
+  namespace: education-ns

@@ -1,0 +1,5 @@
+resources:
+- namespace.yml
+- prometheus-service-account.yml
+- kube-state-metrics
+# - node-exporter

@@ -1,0 +1,15 @@
+namespace: prometheus-adapter
+
+resources:
+- namespace.yaml
+- apiserver-resource-reader-cluster-role-binding.yaml
+- cluster-role.yaml
+- hpa-cluster-role-binding.yaml
+- apiserver-service-account.yaml
+- apiserver-auth-delegator-cluster-role-binding.yaml
+- apiserver-auth-reader-role-binding.yaml
+- configmap.yaml
+- resource-reader-cluster-role.yaml
+- apiserver-service.yaml
+- apiservice.yaml
+- apiserver-deployment.yaml

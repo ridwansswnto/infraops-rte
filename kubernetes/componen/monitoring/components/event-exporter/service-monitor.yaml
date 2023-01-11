@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    name: event-exporter
+  name: event-exporter
+  namespace: monitoring
+spec:
+  endpoints:
+  - honorLabels: true
+    interval: 15s
+    port: metrics
+    relabelings:
+    - sourceLabels:
+      - __meta_kubernetes_endpoint_node_name
+      regex: ^gke-(\w+-\w+).+$
+      targetLabel: cluster_name
+      replacement: $1
+      action: replace
+    - sourceLabels:
+      - __meta_kubernetes_endpoint_node_name
+      targetLabel: node
+      action: replace
+    - action: labeldrop
+      regex: (pod|service|endpoint|namespace)
+    scrapeTimeout: 10s
+  jobLabel: name
+  selector:
+    matchLabels:
+      name: event-exporter

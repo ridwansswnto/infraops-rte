@@ -1,0 +1,46 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    prometheus: k8s
+  name: k8s
+  namespace: monitoring
+spec:
+  containers:
+  - name: "prometheus"
+    args:
+      - --web.console.templates=/etc/prometheus/consoles
+      - --web.console.libraries=/etc/prometheus/console_libraries
+      - --config.file=/etc/prometheus/config_out/prometheus.env.yaml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --storage.tsdb.no-lockfile
+      - --web.route-prefix=/
+      - --storage.tsdb.max-block-duration=2h
+      - --storage.tsdb.min-block-duration=2h
+      - --storage.tsdb.retention.time=2h
+  image: quay.io/prometheus/prometheus
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  nodeSelector:
+    kubernetes.io/os: linux
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  replicas: 1
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: prometheus-k8s
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}
+  additionalScrapeConfigs:
+    name: prometheus-conf
+    key: prometheus-config.yaml
+  thanos:
+    baseImage: quay.io/thanos/thanos
+    objectStorageConfig:
+      key: thanos-bucket.yaml
+      name: thanos-bucket-k8s

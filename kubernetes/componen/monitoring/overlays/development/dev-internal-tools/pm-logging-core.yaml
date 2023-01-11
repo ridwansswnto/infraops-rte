@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: logging-core-exporter
+  namespace: monitoring
+  labels:
+    service_name: logging-core
+spec:
+  jobLabel: app.kubernetes.io/name
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      service_name: logging-core
+  podMetricsEndpoints:
+  - port: app-port
+    interval: 15s
+    path: /tix-logging-core/metrics
+    relabelings:
+      - sourceLabels:
+        - __meta_kubernetes_pod_node_name
+        regex: ^gke-(\w+-\w+).+$
+        targetLabel: cluster_name
+        replacement: $1
+        action: replace
+      - sourceLabels:
+        - __meta_kubernetes_pod_node_name
+        targetLabel: node
+        action: replace

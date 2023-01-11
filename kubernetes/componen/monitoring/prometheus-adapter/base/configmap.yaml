@@ -1,0 +1,221 @@
+---
+# Source: prometheus-adapter/templates/custom-metrics-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-adapter
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-2.7.0
+    release: prometheus-adapter
+    heritage: Helm
+data:
+  config.yaml: |
+    rules:
+    - seriesQuery: '{expose="true"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          pod: {resource: "pod"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_rate"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          pod: {resource: "pod"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_max"
+      metricsQuery: 'max(max_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          pod: {resource: "pod"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_min"
+      metricsQuery: 'min(min_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          pod: {resource: "pod"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_count"
+      metricsQuery: 'sum(count_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          pod: {resource: "pod"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_sum"
+      metricsQuery: 'sum(sum_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          pod: {resource: "pod"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_avg"
+      metricsQuery: 'avg(avg_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", deployment=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          deployment: {resource: "deployment"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_deployment_rate"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", deployment=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          deployment: {resource: "deployment"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_deployment_max"
+      metricsQuery: 'max(max_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", deployment=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          deployment: {resource: "deployment"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_deployment_min"
+      metricsQuery: 'min(min_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", deployment=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          deployment: {resource: "deployment"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_deployment_count"
+      metricsQuery: 'sum(count_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", deployment=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          deployment: {resource: "deployment"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_deployment_sum"
+      metricsQuery: 'sum(sum_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", deployment=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          deployment: {resource: "deployment"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_deployment_avg"
+      metricsQuery: 'avg(avg_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", service=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          service: {resource: "service"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_service_rate"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", service=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          service: {resource: "service"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_service_max"
+      metricsQuery: 'max(max_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", service=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          service: {resource: "service"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_service_min"
+      metricsQuery: 'min(min_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", service=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          service: {resource: "service"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_service_count"
+      metricsQuery: 'sum(count_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", service=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          service: {resource: "service"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_service_sum"
+      metricsQuery: 'sum(sum_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{expose="true", service=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          service: {resource: "service"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_service_avg"
+      metricsQuery: 'avg(avg_over_time(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+    - seriesQuery: 'nginx_ingress_controller_requests{ingress=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          ingress: {resource: "ingress"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_rate"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)'
+    - seriesQuery: 'nginx_ingress_controller_requests{ingress=~".*"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          ingress: {resource: "ingress"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_sum"
+      metricsQuery: 'sum(sum_over_time(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)'
+    - seriesQuery: '{__name__=~"nginx_ingress_controller_.*_bucket",ingress=~".*",le="1"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          ingress: {resource: "ingress"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_rate_50th_percentile"
+      metricsQuery: 'histogram_quantile(0.5, sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m]) by (le, <<.GroupBy>>))'
+    - seriesQuery: '{__name__=~"nginx_ingress_controller_.*_bucket",ingress=~".*",le="1"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          ingress: {resource: "ingress"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_rate_95th_percentile"
+      metricsQuery: 'histogram_quantile(0.95, sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m]) by (le, <<.GroupBy>>))'
+    - seriesQuery: '{__name__=~"nginx_ingress_controller_.*_bucket",ingress=~".*",le="1"}'
+      resources:
+        overrides:
+          namespace: {resource: "namespace"}
+          ingress: {resource: "ingress"}
+      name:
+        matches: "^(.*)$"
+        as: "${1}_rate_99th_percentile"
+      metricsQuery: 'histogram_quantile(0.99, sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m]) by (le, <<.GroupBy>>))'

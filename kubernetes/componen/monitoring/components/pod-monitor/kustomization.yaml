@@ -1,0 +1,6 @@
+resources:
+  # Additional Pod Monitor
+  - pm-jmx-exporter.yaml
+  - pm-proxysql-exporter.yaml
+  - pm-kong-gateway.yaml
+  - pm-twemproxy-exporter.yaml

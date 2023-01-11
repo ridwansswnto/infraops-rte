@@ -30,7 +30,7 @@ data "google_client_openid_userinfo" "terraform_user" {}
 module "ta-cryptokey" {
   source = "../../modules/rds-crypto"
   service_project  = "rds-rnd-project"
-  cluster_name     = "rnd-cluster"
+  cluster_name     = "rnd-cluster-satu"
   cluster_location = "asia-southeast1"
 }
 
@@ -43,7 +43,7 @@ module "rds-cluster" {
   subnet                      = "subnet-sea1-cluster"
   subnet_region               = "asia-southeast1"
   region                      = "asia-southeast1"
-  cluster_name                = "rnd-cluster"
+  cluster_name                = "rnd-cluster-satu"
   cluster_location            = "asia-southeast1"
   pods_range                  = "subnet-sea1-cluster-pods"
   services_range              = "subnet-sea1-cluster-services-1"
@@ -52,13 +52,13 @@ module "rds-cluster" {
   max_memory                  = 200
   enable_binary_authorization = true
   nodepool_auto_upgrade       = false
-  cluster_autoscaling         = true
+  cluster_autoscaling         = false
 
   #APP POOL
   app_pools                   = [
     {
       name                    = "app-pool"
-      machine_type            = "custom-2-${2 * 1024}"
+      machine_type            = "custom-4-${6 * 1024}"
       image_type              = "COS_CONTAINERD"
       preemtible              = true
     },

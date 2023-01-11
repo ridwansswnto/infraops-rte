@@ -1,0 +1,20 @@
+---
+# Source: prometheus-adapter/templates/custom-metrics-apiservice.yaml
+apiVersion: apiregistration.k8s.io/v1beta1
+kind: APIService
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-2.7.0
+    release: prometheus-adapter
+    heritage: Helm
+  name: v1beta1.custom.metrics.k8s.io
+spec:
+  service:
+    name: prometheus-adapter
+    namespace: prometheus-adapter
+  group: custom.metrics.k8s.io
+  version: v1beta1
+  insecureSkipTLSVerify: true
+  groupPriorityMinimum: 100
+  versionPriority: 100

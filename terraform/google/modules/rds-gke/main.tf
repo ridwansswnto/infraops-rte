@@ -31,7 +31,9 @@ locals {
     "roles/storage.objectViewer",
     "roles/artifactregistry.reader",
     "roles/cloudkms.cryptoKeyDecrypter",
-    "roles/cloudkms.cryptoKeyEncrypter"
+    "roles/cloudkms.cryptoKeyEncrypter",
+    "roles/cloudkms.cryptoKeyVersions.useToDecrypt",
+    "roles/cloudkms.cryptoKeyVersions.useToEncrypt"
   ])
 }
 
@@ -121,16 +123,47 @@ resource "google_container_cluster" "primary" {
     identity_namespace = "${var.service_project}.svc.id.goog"
   }
 
+  # dynamic cluster_autoscaling {
+  #   for_each = var.cluster_autoscaling == true ? [1] : [0]
+  #   content {
+  #     enabled = true
+  #     resource_limits {
+  #       resource_type = "cpu"
+  #       maximum       = var.max_cpu
+  #     }
+  #     resource_limits {
+  #       resource_type = "memory"
+  #       maximum       = var.max_memory        
+  #     }
+  #   }
+  # }
+
   cluster_autoscaling {
     enabled = var.cluster_autoscaling
-    resource_limits {
-      resource_type = "cpu"
-      maximum       = var.max_cpu
-    }
-    resource_limits {
-      resource_type = "memory"
-      maximum       = var.max_memory
-    }
+
+    # dynamic "resource_limits" {
+    #   for_each = var.cluster_autoscaling == true ? [1] : []
+    #   content {
+    #     resource_type = "cpu"
+    #     maximum       = var.max_cpu
+    #   }
+    # }
+
+    # dynamic "resource_limits" {
+    #   for_each = var.cluster_autoscaling == true ? [1] : [0]
+    #   content {
+    #     resource_type = "memory"
+    #     maximum       = var.max_memory
+    #   }
+    # }
+    # resource_limits {
+    #   resource_type = "cpu"
+    #   maximum       = var.max_cpu
+    # }
+    # resource_limits {
+    #   resource_type = "memory"
+    #   maximum       = var.max_memory
+    # }
   }
 
   private_cluster_config {

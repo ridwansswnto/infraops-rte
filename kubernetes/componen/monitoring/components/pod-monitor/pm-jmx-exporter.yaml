@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: jmx-exporter
+  namespace: monitoring
+  labels:
+    service_type: java
+spec:
+  jobLabel: app.kubernetes.io/name
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      service_type: java
+  podMetricsEndpoints:
+  - port: metrics
+    interval: 15s
+    relabelings:
+      - sourceLabels:
+        - __meta_kubernetes_pod_node_name
+        regex: ^gke-(\w+-\w+).+$
+        targetLabel: cluster_name
+        replacement: $1
+        action: replace
+      - sourceLabels:
+        - __meta_kubernetes_pod_node_name
+        targetLabel: node
+        action: replace

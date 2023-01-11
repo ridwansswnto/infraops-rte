@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/version: 1.9.5
+  name: kube-state-metrics
+  namespace: monitoring
+spec:
+  endpoints:
+  - honorLabels: true
+    interval: 15s
+    port: metrics
+    relabelings:
+    - sourceLabels:
+      - __meta_kubernetes_endpoint_node_name
+      regex: ^gke-(\w+-\w+).+$
+      targetLabel: cluster_name
+      replacement: $1
+      action: replace
+    - sourceLabels:
+      - __meta_kubernetes_endpoint_node_name
+      targetLabel: node
+      action: replace
+    - action: labeldrop
+      regex: (pod|service|endpoint|namespace)
+    scrapeTimeout: 10s
+  jobLabel: app.kubernetes.io/name
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kube-state-metrics

@@ -1,0 +1,48 @@
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: psp-education
+spec:
+  fsGroup:
+    rule: RunAsAny
+  hostPorts:
+    - max: 0
+      min: 0
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: use-psp:education
+  namespace: education-ns
+rules:
+  - apiGroups:
+      - policy
+    resourceNames:
+      - psp-education
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: use-psp:education
+  namespace: education-ns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: use-psp:education
+subjects:
+  - kind: ServiceAccount
+    name: education-sa
+    namespace: education-ns

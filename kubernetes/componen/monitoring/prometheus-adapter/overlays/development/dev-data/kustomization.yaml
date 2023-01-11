@@ -1,0 +1,18 @@
+bases:
+- ../../../base
+
+patches:
+- patch: |
+    - op: replace
+      path: /spec/template/spec/containers/0/args
+      value:
+        - /adapter
+        - --secure-port=6443
+        - --cert-dir=/tmp/cert
+        - --logtostderr=true
+        - --prometheus-url=http://prometheus-k8s.monitoring.svc.cluster.local:9090
+        - --metrics-relist-interval=30s
+        - --v=10
+        - --config=/etc/adapter/config.yaml
+  target:
+    kind: Deployment

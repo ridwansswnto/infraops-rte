@@ -10,7 +10,7 @@ resource "google_kms_crypto_key" "cluster-key" {
   rotation_period = "2592000s"
   purpose         = "ENCRYPT_DECRYPT"
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 

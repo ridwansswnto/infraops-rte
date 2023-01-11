@@ -1,0 +1,5 @@
+resources:
+- privileged-psp.yaml
+- resources-role.yaml
+- restricted-psp-nginx.yaml
+- restricted-psp.yaml

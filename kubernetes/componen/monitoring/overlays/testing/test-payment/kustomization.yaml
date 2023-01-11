@@ -1,0 +1,38 @@
+bases:
+  - ../../common
+
+patches:
+- patch: |
+    - op: replace
+      path: /metadata/name
+      value: k8s-test-payment
+  target:
+    kind: Prometheus
+    name: k8s
+
+- patch: |
+    - op: replace
+      path: /spec/selector/prometheus
+      value: k8s-test-payment
+  target:
+    kind: Service
+    name: prometheus-k8s
+
+- patch: |
+    - op: replace
+      path: /spec/selector/prometheus
+      value: k8s-test-payment
+  target:
+    kind: Service
+    name: thanos-sidecar-k8s
+
+- patch: |
+    - op: replace
+      path: /spec/selector/matchLabels/app.kubernetes.io~1name
+      value: ingress-nginx-internal
+  target:
+    kind: ServiceMonitor
+    name: ingress-nginx
+
+generators:
+  - secret-generator.yaml

@@ -1,0 +1,14 @@
+resources:
+  - service-account.yaml
+  - prometheus.yaml
+  - service.yaml
+  - service-monitor.yaml
+  - sidecar-service.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+secretGenerator:
+- name: prometheus-conf
+  namespace: monitoring
+  files:
+    - prometheus-config.yaml

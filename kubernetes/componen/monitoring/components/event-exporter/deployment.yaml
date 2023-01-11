@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: event-exporter
+  name: event-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: event-exporter
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: '9102'
+        prometheus.io/scrape: 'true'
+      labels:
+        app: event-exporter
+    spec:
+      securityContext:
+        runAsUser: 1000
+      containers:
+        - name: event-exporter
+          image: 'caicloud/event-exporter:v1.0.0'
+          imagePullPolicy: Always
+          args:
+            - --eventType=Warning
+            - --eventType=Normal
+          ports:
+            - containerPort: 9102
+              name: metrics
+          resources:
+            limits:
+              memory: 100Mi
+            requests:
+              memory: 40Mi
+      serviceAccountName: event-exporter
+      terminationGracePeriodSeconds: 30

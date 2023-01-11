@@ -1,0 +1,5 @@
+resources:
+- service-account.yml
+- psp.yml
+- daemonset.yml
+- service.yml

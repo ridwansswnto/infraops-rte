@@ -1,0 +1,10 @@
+bases:
+  - ../../base
+
+resources:
+  # - ingress.yaml
+  - ../../components/kube-state-metrics
+  - ../../components/prometheus-operator
+  - ../../components/service-monitor
+  - ../../components/pod-monitor
+  - ../../components/prometheus/prometheus-k8s

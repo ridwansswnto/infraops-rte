@@ -1,8 +1,8 @@
 # INFRASTRUCTURE and OPERATIONS ROAD-TO-EXPERT
 
 
-## Notes
-### GKE
+# Notes
+## GKE
 
 Terdapat notif `Can’t scale up a node pool because of a failing scheduling predicate `
 
@@ -150,9 +150,38 @@ module.rds-cluster.google_container_cluster.primary: Modifications complete afte
 ```
 
 
-SCALING UP and DOWN
+### SCALING UP and DOWN
 
 Scaling DOWN takes time `+- 13 MENIT` ketika nodes sudah tenang
 https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#how-does-scale-down-work
 
 Scaling UP takes time `+- 2 MENIT` ketika pods sudah tidak bisa up dengan nodes yang ada, maka di perlukan untuk provision node baru oleh gke yang akan memakan waktu sekitar `+- 2 MENIT`
+
+### Behaviour UPGRADE SPEC POOLS
+
+Update in place terraform
+1. From terraform
+```
+Plan: 1 to add, 0 to change, 1 to destroy.
+```
+
+2. FAILED !!!!
+Node Destroyed
+
+jadi kita harus spawn node pool baru terlebih dahulu, kemudian kita drain dan cordone sehingga workload exisiting move to new node pool
+
+
+
+### GCLOUD CHEAT SHEET
+
+1. show config list profile
+gcloud config configurations list
+
+2. activate config
+
+
+### Kubernetes Playground with GKE
+
+1. Run terraform apply in GKE
+2. Run psp
+3. 

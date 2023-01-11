@@ -1,0 +1,4 @@
+resources:
+  # Additional Service Monitor
+  - sm-cert-manager.yaml
+  - sm-ingress-nginx.yaml
