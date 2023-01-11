@@ -1,0 +1,9 @@
+resources:
+  - ns.yaml
+  - admission-service-account.yaml
+  - configmap.yaml
+  - deployment.yaml
+  - ingress-service-account.yaml
+  - ingressclass.yaml
+  - jobs.yaml
+  - services.yaml
